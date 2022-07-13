@@ -1,10 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useFirebase } from "react-redux-firebase";
 
 const Home = () => {
-  const firebase = useFirebase();
+  let history = useHistory();
 
+  const firebase = useFirebase();
+  const signInWithFacebook = () => {
+    firebase
+      .login({
+        provider: "facebook",
+        type: "popup",
+      })
+      .then(() => {
+        history.push("/dashboard");
+      });
+  };
   // const { user, logoutUser } = useUserContext();
   return (
     <>
@@ -16,7 +27,13 @@ const Home = () => {
                 <div className="text-blueGray-400 text-center mt-12 my-3 font-semibold text-xl">
                   <h1> Facebook Page Integration</h1>
                 </div>
-                <button className="w-full bg-Bg text-center text-gray-300 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <button
+                  type="button"
+                  onClick={() => {
+                    signInWithFacebook();
+                  }}
+                  className="w-full bg-Bg text-center text-gray-300 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
                   Connect Page
                 </button>
                 <div className="flex items-center">
