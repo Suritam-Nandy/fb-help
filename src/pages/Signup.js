@@ -11,23 +11,14 @@ const Signup = (props) => {
   let history = useHistory();
   const firebase = useFirebase();
   const firestore = useFirestore();
-  // const [docRole, setDocRole] = useState("");
-  var role = props.location.role
-    ? props.location.role
-    : window.localStorage.getItem("role");
 
   // Save data to localStorage
-  window.localStorage.setItem("role", role);
-
-  console.log(role);
-  // firebase.updateProfile({ role: role });
 
   // const auth = useSelector((state) => state.firebase.auth);
   const [user, setUser] = useState({
     displayName: "",
     email: "",
     password: "",
-    role: role,
   });
 
   const signInWithGoogle = () => {
@@ -38,7 +29,6 @@ const Signup = (props) => {
       })
       .then((resp) => {
         firestore.collection("users").doc(resp.user.uid).update({
-          role: role,
           createdAt: firestore.FieldValue.serverTimestamp(),
         });
         history.push("/dashboard");
@@ -56,7 +46,6 @@ const Signup = (props) => {
           .doc(resp.user.uid)
 
           .update({
-            role: role,
             createdAt: firestore.FieldValue.serverTimestamp(),
           });
       });
@@ -80,7 +69,6 @@ const Signup = (props) => {
           .set({
             displayName: user.displayName,
             email: user.email,
-            role: role,
 
             createdAt: firestore.FieldValue.serverTimestamp(),
           })
@@ -98,7 +86,7 @@ const Signup = (props) => {
         <div className="flex content-center items-center justify-center min-h-100 h-screen">
           <div className="w-full lg:w-3/12 px-4 items-center ">
             <div className="relative container flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
-              <div className="flex-auto px-4 lg:px-10 py-4 pt-0">
+              <div className="flex-auto px-4 lg:px-10 pb-10 pt-0">
                 <div className="text-blueGray-400 text-center mt-12 my-3 font-semibold text-xl">
                   <h1>Create Account</h1>
                 </div>
@@ -142,23 +130,24 @@ const Signup = (props) => {
                       //   onChange={onInputChange}
                     />
                   </div>
+                  <div className="flex flex-row my-0.5 p-1  hover:text-black">
+                    <input
+                      type="checkbox"
+                      className="text-gray-800 mt-1 "
+                      // onClick={handleClickAmenities}
+                      name="rememberMe"
+                    />
+                    <span className="text-lg text-gray-900 ml-1 mt-1">
+                      Remember Me
+                    </span>
+                  </div>
                   <div className="w-full bg-Bg text-center">
                     <button className=" text-gray-300 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                       Sign up
                     </button>
                   </div>
                 </form>
-                <div className="flex flex-row my-0.5 p-1  hover:text-black">
-                  <input
-                    type="checkbox"
-                    className="text-gray-800 mt-1 "
-                    // onClick={handleClickAmenities}
-                    name="rememberMe"
-                  />
-                  <span className="text-lg text-gray-900 ml-1 mt-1">
-                    Remember Me
-                  </span>
-                </div>
+
                 {/* <hr className="mt-6 border-b-1 border-blueGray-300" />
                 <div className="rounded-t mb-0 px-6 py-6">
                   <div className="text-center mb-3">
@@ -189,7 +178,7 @@ const Signup = (props) => {
                     </button>
                   </div>
                 </div> */}
-                <div className="text-blueGray-400 text-center mb-3 font-bold">
+                <div className="text-blueGray-400 text-center mt-3 font-bold">
                   <small>Already have an account?</small>
                   <label className="text-blueGray-500 hover:text-blueGray-600">
                     {" "}
@@ -203,9 +192,6 @@ const Signup = (props) => {
           </div>
         </div>
       </div>
-      <Link to="/allspaces" className="dropdown-item">
-        Listed Spaces
-      </Link>
     </>
   );
 };
