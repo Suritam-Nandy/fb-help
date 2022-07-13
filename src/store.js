@@ -18,13 +18,13 @@ import { createFirestoreInstance } from "redux-firestore"; // <- needed if using
 // };
 
 const fbConfig = {
-  apiKey: "AIzaSyAh0cK7VxVMPeRvr7W3r1e0X-pI1Uhiv1Q",
-  authDomain: "litestore-242f8.firebaseapp.com",
-  projectId: "litestore-242f8",
-  storageBucket: "litestore-242f8.appspot.com",
-  messagingSenderId: "489960878790",
-  appId: "1:489960878790:web:31df43286dafe2fd685dc7",
-  measurementId: "G-BYVYDLZKLJ",
+  apiKey: "AIzaSyCw92NqpoI-bfrkgzC-DQOfFiJacuMwkdo",
+  authDomain: "fb-help.firebaseapp.com",
+  projectId: "fb-help",
+  storageBucket: "fb-help.appspot.com",
+  messagingSenderId: "807198308055",
+  appId: "1:807198308055:web:5f89028c114081ac6ce292",
+  measurementId: "G-HG26Z3KXYF",
 };
 
 // react-redux-firebase config

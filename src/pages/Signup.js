@@ -1,18 +1,14 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Input from "../components/layout/Input";
 import { useFirebase, useFirestore } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 const Signup = (props) => {
   let history = useHistory();
   const firebase = useFirebase();
   const firestore = useFirestore();
-
-  // Save data to localStorage
 
   // const auth = useSelector((state) => state.firebase.auth);
   const [user, setUser] = useState({
@@ -20,37 +16,6 @@ const Signup = (props) => {
     email: "",
     password: "",
   });
-
-  const signInWithGoogle = () => {
-    firebase
-      .login({
-        provider: "google",
-        type: "popup",
-      })
-      .then((resp) => {
-        firestore.collection("users").doc(resp.user.uid).update({
-          createdAt: firestore.FieldValue.serverTimestamp(),
-        });
-        history.push("/dashboard");
-      });
-  };
-  const signInWithFacebook = () => {
-    firebase
-      .login({
-        provider: "facebook",
-        type: "popup",
-      })
-      .then((resp) => {
-        return firestore
-          .collection("users")
-          .doc(resp.user.uid)
-
-          .update({
-            createdAt: firestore.FieldValue.serverTimestamp(),
-          });
-      });
-    history.push("/dashboard");
-  };
 
   const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -78,21 +43,24 @@ const Signup = (props) => {
       });
     // const some = await firebase.login(user);
     // console.log(some);
-    history.replace("/dashboard");
+    history.replace("/");
   };
   return (
     <>
-      <div className=" mx-auto px-4 h-full bg-Bg">
+      <div className="mx-auto h-full bg-Bg">
         <div className="flex content-center items-center justify-center min-h-100 h-screen">
           <div className="w-full lg:w-3/12 px-4 items-center ">
             <div className="relative container flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
-              <div className="flex-auto px-4 lg:px-10 pb-10 pt-0">
+              <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <div className="text-blueGray-400 text-center mt-12 my-3 font-semibold text-xl">
-                  <h1>Create Account</h1>
+                  <h1>Login to your account</h1>
                 </div>
                 <form onSubmit={submitForm}>
                   <div className="relative w-full mb-3">
-                    <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    <label
+                      className="block  text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="grid-password"
+                    >
                       Name
                     </label>
                     <Input
@@ -104,7 +72,10 @@ const Signup = (props) => {
                     />
                   </div>
                   <div className="relative w-full mb-3">
-                    <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    <label
+                      className="block  text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="grid-password"
+                    >
                       Email
                     </label>
                     <Input
@@ -117,67 +88,35 @@ const Signup = (props) => {
                   </div>
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      className="block  text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
                       Password
                     </label>
-                    <input
+                    <Input
                       type="password"
-                      //   name="password"
-                      className="form-control w-56 md:w-64 xl:w-full shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      name="password"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Enter Your Password"
-                      //   onChange={onInputChange}
+                      value={user.password}
+                      onChange={onInputChange}
                     />
                   </div>
-                  <div className="flex flex-row my-0.5 p-1  hover:text-black">
+                  <div className="flex flex-row mb-10 p-1  hover:text-black">
                     <input
                       type="checkbox"
                       className="text-gray-800 mt-1 "
                       // onClick={handleClickAmenities}
                       name="rememberMe"
                     />
-                    <span className="text-lg text-gray-900 ml-1 mt-1">
+                    <span className="text-lg text-gray-900 ml-1 mt-0.5">
                       Remember Me
                     </span>
                   </div>
-                  <div className="w-full bg-Bg text-center">
-                    <button className=" text-gray-300 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                      Sign up
-                    </button>
-                  </div>
+                  <button className="w-full bg-Bg text-center text-gray-300 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Sign up
+                  </button>
                 </form>
-
-                {/* <hr className="mt-6 border-b-1 border-blueGray-300" />
-                <div className="rounded-t mb-0 px-6 py-6">
-                  <div className="text-center mb-3">
-                    <h6 className="text-blueGray-500 text-sm font-bold">
-                      Sign up with
-                    </h6>
-                  </div>
-                  <div className="btn-wrapper text-center">
-                    <button
-                      className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => {
-                        signInWithGoogle();
-                      }}
-                    >
-                      <FcGoogle className="mr-1" size={20} />
-                      Google
-                    </button>
-                    <button
-                      className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => {
-                        signInWithFacebook();
-                      }}
-                    >
-                      <AiFillFacebook className=" mr-1" size={20} />
-                      Facebook
-                    </button>
-                  </div>
-                </div> */}
                 <div className="text-blueGray-400 text-center mt-3 font-bold">
                   <small>Already have an account?</small>
                   <label className="text-blueGray-500 hover:text-blueGray-600">
